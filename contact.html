@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact, Ajay Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white:#ffffff; --off-white:#f7f7f7; --black:#0a0a0a;
+      --gray-100:#e8e8e8; --gray-200:#d4d4d4; --gray-400:#999999; --gray-600:#4a4a4a;
+      --green:#1A7A4A; --green-pale:#EAF4EE; --red:#C0392B; --red-pale:#FDECEA;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Space Grotesk',sans-serif;background:var(--white);color:var(--black);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    em,i{font-style:normal}
+    a{color:inherit;text-decoration:none}
+
+    /* NAV */
+    nav{position:fixed;left:0;top:0;width:220px;height:100vh;background:var(--white);border-right:1px solid var(--gray-100);display:flex;flex-direction:column;padding:24px 14px;z-index:1000;overflow-y:auto}
+    .nav-logo{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--black);padding:0 8px;margin-bottom:28px}
+    nav ul{list-style:none;display:flex;flex-direction:column;gap:1px}
+    nav li{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:5px;transition:background 0.15s}
+    nav li:hover{background:var(--off-white)}
+    nav li.active{background:var(--off-white);border-left:2px solid var(--black);padding-left:8px}
+    nav a{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--black);flex:1;line-height:1}
+    .nav-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .nav-icon svg{width:14px;height:14px;stroke:var(--black);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .nav-group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.13em;color:var(--gray-400);padding:14px 10px 6px}
+    .nav-divider{height:1px;background:var(--gray-100);margin:10px 0}
+    main{margin-left:220px}
+
+    /* HERO */
+    .hero{padding:96px 64px 72px;border-bottom:1px solid var(--gray-100)}
+    .hero-inner{max-width:1080px;margin:0 auto}
+    .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:24px}
+    .hero-title{font-size:clamp(48px,7vw,84px);font-weight:700;letter-spacing:-0.03em;line-height:1.02;margin-bottom:24px;max-width:900px}
+    .hero-sub{font-size:17px;color:var(--gray-600);line-height:1.7;max-width:640px}
+    .hero-sub strong{color:var(--black);font-weight:600}
+
+    /* GRID: form + sidebar */
+    .contact-section{padding:80px 64px;border-bottom:1px solid var(--gray-100)}
+    .contact-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:start}
+
+    /* FORM */
+    .form-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:14px}
+    .form-title{font-size:28px;font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:14px}
+    .form-sub{font-size:14px;color:var(--gray-600);line-height:1.65;margin-bottom:32px;max-width:500px}
+
+    .form{display:flex;flex-direction:column;gap:18px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray-600)}
+    .field label .req{color:var(--red);margin-left:2px}
+    .field input,.field textarea,.field select{
+      width:100%;padding:12px 14px;background:var(--white);
+      border:1px solid var(--gray-100);border-radius:7px;
+      font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;color:var(--black);
+      transition:border-color 0.18s,box-shadow 0.18s;
+      box-shadow:0 1px 0 var(--gray-100)
+    }
+    .field input::placeholder,.field textarea::placeholder{color:var(--gray-400);font-weight:400}
+    .field input:focus,.field textarea:focus,.field select:focus{
+      outline:none;border-color:var(--black);box-shadow:0 0 0 3px rgba(10,10,10,0.07),0 1px 0 var(--black)
+    }
+    .field textarea{min-height:140px;resize:vertical;line-height:1.5}
+    .field.has-error input,.field.has-error textarea,.field.has-error select{
+      border-color:var(--red);box-shadow:0 1px 0 var(--red)
+    }
+    .field-error{font-size:11px;font-weight:600;color:var(--red);min-height:16px;letter-spacing:0.02em}
+    .field-error.in{display:block}
+
+    /* Honeypot - hidden from humans, present for bots */
+    .hp-field{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;tab-index:-1}
+
+    /* Math captcha */
+    .captcha-row{display:grid;grid-template-columns:1fr 110px;gap:16px;align-items:end}
+    .captcha-q{padding:13px 16px;background:var(--off-white);border:1px solid var(--gray-100);border-radius:7px;font-size:14px;font-weight:600;color:var(--black);display:flex;align-items:center;gap:10px}
+    .captcha-q .lbl{font-size:10px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--gray-400)}
+    .captcha-q .q{font-feature-settings:"tnum"}
+    .captcha-q .refresh{margin-left:auto;width:18px;height:18px;cursor:pointer;color:var(--gray-400);transition:color 0.18s,transform 0.3s}
+    .captcha-q .refresh:hover{color:var(--black);transform:rotate(90deg)}
+
+    /* Submit */
+    .form-submit{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:0.04em;cursor:pointer;transition:background 0.2s,border-color 0.2s,transform 0.15s,opacity 0.2s;border:1px solid var(--black);background:var(--black);color:var(--white);font-family:'Space Grotesk',sans-serif}
+    .btn:hover:not(:disabled){background:var(--gray-600);border-color:var(--gray-600)}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn .arrow{transition:transform 0.2s}
+    .btn:hover:not(:disabled) .arrow{transform:translateX(3px)}
+    .form-note{font-size:12px;color:var(--gray-400);font-weight:500}
+
+    /* Status messages */
+    .form-status{padding:14px 16px;border-radius:7px;font-size:13px;font-weight:600;display:none;align-items:flex-start;gap:10px;line-height:1.5}
+    .form-status.show{display:flex}
+    .form-status.ok{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,122,74,0.2)}
+    .form-status.err{background:var(--red-pale);color:var(--red);border:1px solid rgba(192,57,43,0.2)}
+    .form-status .dot{font-size:16px;line-height:1;flex-shrink:0}
+
+    /* SIDEBAR (direct details) */
+    .sidebar{position:sticky;top:32px}
+    .side-block{padding:24px 26px;background:var(--white);border:1px solid var(--gray-100);border-radius:10px;margin-bottom:14px}
+    .side-block .label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .side-block .label .icon{width:13px;height:13px;display:flex;align-items:center;justify-content:center}
+    .side-block .label .icon svg{width:13px;height:13px;stroke:var(--gray-400);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .side-block .value{font-size:15px;font-weight:600;color:var(--black);letter-spacing:-0.005em;line-height:1.45;display:inline-block;border-bottom:1px solid transparent;transition:border-color 0.18s}
+    .side-block .value:hover{border-color:var(--black)}
+    .side-block .meta{font-size:12px;color:var(--gray-400);margin-top:5px;font-weight:500}
+
+    /* Social links list */
+    .social-block{padding:24px 26px;background:var(--white);border:1px solid var(--gray-100);border-radius:10px}
+    .social-block .label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:14px}
+    .social-list{list-style:none;display:flex;flex-direction:column;gap:1px}
+    .social-list li{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:6px;transition:background 0.18s}
+    .social-list li:hover{background:var(--off-white)}
+    .social-list li:hover .arrow{opacity:1;transform:translateX(0)}
+    .social-list a{display:flex;align-items:center;gap:12px;flex:1;color:var(--black)}
+    .social-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--black)}
+    .social-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .social-text{flex:1;display:flex;flex-direction:column;gap:1px}
+    .social-name{font-size:13px;font-weight:600;color:var(--black)}
+    .social-handle{font-size:11px;color:var(--gray-400);font-weight:500}
+    .arrow{font-size:14px;color:var(--gray-400);opacity:0;transform:translateX(-4px);transition:opacity 0.2s,transform 0.2s}
+
+    /* Response promise */
+    .promise{padding:32px;background:var(--black);color:var(--white);border-radius:10px;margin-top:14px}
+    .promise .label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:14px}
+    .promise .text{font-size:15px;line-height:1.6;font-weight:500}
+    .promise .text strong{font-weight:700}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:0.1s}
+    .reveal-delay-2{transition-delay:0.2s}
+    .reveal-delay-3{transition-delay:0.3s}
+
+    /* Mobile menu toggle */
+    .mobile-menu-toggle{display:none;position:fixed;top:18px;left:18px;width:42px;height:42px;background:var(--white);border:1px solid var(--gray-100);border-radius:7px;cursor:pointer;z-index:3000;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0}
+    .mobile-menu-toggle span{width:17px;height:1.5px;background:var(--black);border-radius:1px;display:block;transition:all 0.25s}
+    .mobile-menu-toggle.active span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .mobile-menu-toggle.active span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .mobile-menu-toggle.active span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+    @media (max-width:1024px){
+      nav{width:190px}main{margin-left:190px}
+      .hero,.contact-section{padding-left:32px;padding-right:32px}
+      .contact-grid{grid-template-columns:1fr;gap:48px}
+      .sidebar{position:static}
+    }
+    @media (max-width:768px){
+      .mobile-menu-toggle{display:flex}
+      nav{position:fixed;left:-100%;width:80vw;max-width:280px;height:100vh;transition:left 0.3s;box-shadow:2px 0 20px rgba(0,0,0,0.1);padding-top:72px}
+      nav.open{left:0}
+      main{margin-left:0}
+      .hero{padding:80px 20px 48px}
+      .contact-section{padding:48px 20px}
+      .form-row{grid-template-columns:1fr}
+      .captcha-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ============== SIDEBAR NAV ============== -->
+  <nav id="sidebar">
+    <div class="nav-logo">Ajay Kumar</div>
+    <div class="nav-group-label">Main</div>
+    <ul>
+      <li><a href="index.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span><span>Home</span></a></li>
+      <li><a href="about.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span><span>About</span></a></li>
+      <li><a href="journey.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><span>Journey</span></a></li>
+      <li><a href="case-studies.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span><span>Case Studies</span></a></li>
+      <li><a href="tech-stack.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="5" rx="1"/></svg></span><span>Tech Stack</span></a></li>
+      <li><a href="gallery.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span><span>Gallery</span></a></li>
+    </ul>
+    <div class="nav-divider"></div>
+    <div class="nav-group-label">Resources</div>
+    <ul>
+      <li><a href="experiments.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 9H8L9 3z"/><path d="M8 12l-2 7a1 1 0 001 1h10a1 1 0 001-1l-2-7"/><circle cx="12" cy="17" r="1"/></svg></span><span>Experiments</span></a></li>
+      <li><a href="playbooks.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></span><span>Playbooks</span></a></li>
+      <li><a href="launches.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><span>Launches</span></a></li>
+    </ul>
+    <div class="nav-divider"></div>
+    <div class="nav-group-label">Fun</div>
+    <ul>
+      <li><a href="games.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 12h4M9 10v4"/><circle cx="16" cy="11" r="1"/></svg></span><span>Games</span></a></li>
+    </ul>
+    <div class="nav-divider"></div>
+    <div class="nav-group-label">Connect</div>
+    <ul>
+      <li class="active"><a href="contact.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span><span>Contact</span></a></li>
+      <li><a href="https://www.linkedin.com/in/v-a-ajay-kumar/" target="_blank" rel="noopener"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.5"/><path d="M11 17v-4a2 2 0 014 0v4M11 10v7"/></svg></span><span>LinkedIn</span></a></li>
+      <li><a href="https://www.instagram.com/neoponic/" target="_blank" rel="noopener"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span>Instagram</span></a></li>
+      <li><a href="https://www.blogger.com" target="_blank" rel="noopener"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 10h5M8 14h7"/></svg></span><span>Blogger</span></a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- ============== HERO ============== -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Contact</div>
+        <h1 class="hero-title">Let's talk.</h1>
+        <p class="hero-sub">For roles, freelance projects, or to compare notes on marketing, AI, or anything in between. The form below is the fastest way to reach me. <strong>I respond within 48 hours, usually faster.</strong></p>
+      </div>
+    </section>
+
+    <!-- ============== CONTACT ============== -->
+    <section class="contact-section">
+      <div class="contact-grid">
+
+        <!-- ── FORM ─────────────────────────────────────── -->
+        <div class="form-area">
+          <div class="form-eyebrow reveal">Send a message</div>
+          <h2 class="form-title reveal reveal-delay-1">Tell me what's on your mind.</h2>
+          <p class="form-sub reveal reveal-delay-1">Hiring for a role, scoping a project, or just want to talk shop. All welcome. Be specific where you can, but don't worry about polish.</p>
+
+          <form id="contactForm" class="form reveal reveal-delay-2" novalidate>
+
+            <!-- Honeypot: hidden from humans, traps bots -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="website">Website (leave empty)</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="name">Name <span class="req">*</span></label>
+                <input type="text" id="name" name="name" placeholder="Your full name" required>
+                <div class="field-error" data-for="name"></div>
+              </div>
+              <div class="field">
+                <label for="email">Email <span class="req">*</span></label>
+                <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                <div class="field-error" data-for="email"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="company">Company / Role</label>
+                <input type="text" id="company" name="company" placeholder="Optional">
+                <div class="field-error" data-for="company"></div>
+              </div>
+              <div class="field">
+                <label for="reason">Reason <span class="req">*</span></label>
+                <select id="reason" name="reason" required>
+                  <option value="">Select one</option>
+                  <option value="role">Hiring for a role</option>
+                  <option value="freelance">Freelance / project</option>
+                  <option value="collab">Collaboration</option>
+                  <option value="advice">Advice / chat</option>
+                  <option value="other">Other</option>
+                </select>
+                <div class="field-error" data-for="reason"></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="message">Message <span class="req">*</span></label>
+              <textarea id="message" name="message" placeholder="A few sentences on what you're working on, what you're hoping to discuss, or where you're stuck." required></textarea>
+              <div class="field-error" data-for="message"></div>
+            </div>
+
+            <!-- Math captcha -->
+            <div class="captcha-row">
+              <div class="captcha-q">
+                <span class="lbl">Quick check:</span>
+                <span class="q" id="captchaQuestion">3 + 5 = ?</span>
+                <svg class="refresh" id="captchaRefresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+              </div>
+              <div class="field">
+                <label for="captcha">Answer <span class="req">*</span></label>
+                <input type="text" id="captcha" name="captcha" inputmode="numeric" placeholder="Number" required>
+              </div>
+            </div>
+            <div class="field-error" data-for="captcha" style="margin-top:-12px"></div>
+
+            <div class="form-status" id="formStatus" role="status" aria-live="polite">
+              <span class="dot"></span>
+              <span class="msg"></span>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn" id="submitBtn">
+                <span class="btn-text">Send message</span>
+                <span class="arrow">&rarr;</span>
+              </button>
+              <span class="form-note">Required fields marked with *</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- ── SIDEBAR ─────────────────────────────────────── -->
+        <aside class="sidebar">
+
+          <div class="side-block reveal reveal-delay-1">
+            <div class="label">
+              <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+              <span>Email</span>
+            </div>
+            <a class="value" href="mailto:va.ajaykumar2002@gmail.com">va.ajaykumar2002@gmail.com</a>
+            <div class="meta">Best for detailed messages</div>
+          </div>
+
+          <div class="side-block reveal reveal-delay-2">
+            <div class="label">
+              <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg></span>
+              <span>Phone</span>
+            </div>
+            <a class="value" href="tel:+917356747098">+91 7356 747 098</a>
+            <div class="meta">UAE / India hours</div>
+          </div>
+
+          <div class="social-block reveal reveal-delay-3">
+            <div class="label">Or find me here</div>
+            <ul class="social-list">
+              <li>
+                <a href="https://www.linkedin.com/in/v-a-ajay-kumar/" target="_blank" rel="noopener">
+                  <span class="social-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.5"/><path d="M11 17v-4a2 2 0 014 0v4M11 10v7"/></svg></span>
+                  <span class="social-text">
+                    <span class="social-name">LinkedIn</span>
+                    <span class="social-handle">/in/v-a-ajay-kumar</span>
+                  </span>
+                  <span class="arrow">&rarr;</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/neoponic/" target="_blank" rel="noopener">
+                  <span class="social-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span>
+                  <span class="social-text">
+                    <span class="social-name">Instagram</span>
+                    <span class="social-handle">@neoponic</span>
+                  </span>
+                  <span class="arrow">&rarr;</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.blogger.com" target="_blank" rel="noopener">
+                  <span class="social-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 10h5M8 14h7"/></svg></span>
+                  <span class="social-text">
+                    <span class="social-name">Blogger</span>
+                    <span class="social-handle">Long-form writing</span>
+                  </span>
+                  <span class="arrow">&rarr;</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="promise reveal reveal-delay-3">
+            <div class="label">Response time</div>
+            <p class="text">I read every message. <strong>Replies within 48 hours.</strong> If it's been longer, your email probably hit my spam folder, try LinkedIn.</p>
+          </div>
+
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ===== Mobile menu =====
+    const toggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      toggle.classList.toggle('active');
+      sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', e => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        toggle.classList.remove('active');
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // ===== Scroll reveal =====
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ===== Math captcha =====
+    let captchaAnswer = 0;
+    function generateCaptcha() {
+      const a = Math.floor(Math.random() * 9) + 1;
+      const b = Math.floor(Math.random() * 9) + 1;
+      const ops = ['+', '-'];
+      const op = ops[Math.floor(Math.random() * ops.length)];
+      let q, ans;
+      if (op === '+') {
+        q = a + ' + ' + b + ' = ?';
+        ans = a + b;
+      } else {
+        // Ensure non-negative
+        const big = Math.max(a, b), small = Math.min(a, b);
+        q = big + ' - ' + small + ' = ?';
+        ans = big - small;
+      }
+      document.getElementById('captchaQuestion').textContent = q;
+      captchaAnswer = ans;
+      const captchaInput = document.getElementById('captcha');
+      if (captchaInput) captchaInput.value = '';
+    }
+    generateCaptcha();
+    document.getElementById('captchaRefresh').addEventListener('click', generateCaptcha);
+
+    // ===== Validation =====
+    function setError(fieldName, message) {
+      const errEl = document.querySelector(`.field-error[data-for="${fieldName}"]`);
+      const fieldWrap = document.getElementById(fieldName)?.closest('.field');
+      if (errEl) errEl.textContent = message;
+      if (fieldWrap) fieldWrap.classList.toggle('has-error', !!message);
+    }
+
+    function clearAllErrors() {
+      document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
+      document.querySelectorAll('.field.has-error').forEach(e => e.classList.remove('has-error'));
+    }
+
+    function validateEmail(email) {
+      // Reasonable email regex - strict enough to catch typos, lenient enough not to reject valid edge cases
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    }
+
+    function validateForm(data) {
+      let valid = true;
+      clearAllErrors();
+
+      if (!data.name || data.name.trim().length < 2) {
+        setError('name', 'Please enter your name (at least 2 characters).');
+        valid = false;
+      }
+      if (!data.email || !validateEmail(data.email)) {
+        setError('email', 'Please enter a valid email address.');
+        valid = false;
+      }
+      if (!data.reason) {
+        setError('reason', 'Please pick a reason.');
+        valid = false;
+      }
+      if (!data.message || data.message.trim().length < 10) {
+        setError('message', 'A few sentences please (at least 10 characters).');
+        valid = false;
+      }
+      // Captcha check
+      const captchaInput = parseInt(data.captcha, 10);
+      if (isNaN(captchaInput) || captchaInput !== captchaAnswer) {
+        setError('captcha', 'Check the math above.');
+        valid = false;
+      }
+      // Honeypot: if filled, treat as bot but pretend success
+      if (data.website && data.website.length > 0) {
+        return 'bot';
+      }
+      return valid;
+    }
+
+    // ===== Form submission =====
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('formStatus');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showStatus(type, message) {
+      statusEl.classList.remove('ok', 'err');
+      statusEl.classList.add('show', type);
+      const dot = statusEl.querySelector('.dot');
+      const msg = statusEl.querySelector('.msg');
+      dot.textContent = type === 'ok' ? '✓' : '✕';
+      msg.textContent = message;
+    }
+    function hideStatus() {
+      statusEl.classList.remove('show', 'ok', 'err');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideStatus();
+
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        company: form.company.value.trim(),
+        reason: form.reason.value,
+        message: form.message.value.trim(),
+        captcha: form.captcha.value.trim(),
+        website: form.website.value.trim() // honeypot
+      };
+
+      const validResult = validateForm(data);
+      if (validResult === 'bot') {
+        // Silently succeed for bots
+        showStatus('ok', "Thanks, I'll be in touch soon.");
+        form.reset();
+        generateCaptcha();
+        return;
+      }
+      if (!validResult) {
+        showStatus('err', 'Please fix the highlighted fields and try again.');
+        // Scroll to first error
+        const firstErr = document.querySelector('.field.has-error');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Disable submit
+      submitBtn.disabled = true;
+      submitBtn.querySelector('.btn-text').textContent = 'Sending...';
+
+      // ===== FORMSPREE ENDPOINT =====
+      // To activate: sign up at https://formspree.io (free), create a new form,
+      // paste your endpoint URL below in place of YOUR_FORM_ID.
+      // Until then, submissions only show success message but don't actually send.
+      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+      const isPlaceholder = FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID');
+
+      try {
+        if (isPlaceholder) {
+          // Simulate network delay
+          await new Promise(r => setTimeout(r, 800));
+          showStatus('ok', "Message sent. I'll get back to you within 48 hours.");
+          form.reset();
+          generateCaptcha();
+        } else {
+          const res = await fetch(FORMSPREE_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              name: data.name,
+              email: data.email,
+              company: data.company,
+              reason: data.reason,
+              message: data.message,
+              _subject: `Portfolio contact: ${data.reason} from ${data.name}`
+            })
+          });
+          if (res.ok) {
+            showStatus('ok', "Message sent. I'll get back to you within 48 hours.");
+            form.reset();
+            generateCaptcha();
+          } else {
+            const errData = await res.json().catch(() => ({}));
+            const msg = errData.errors?.[0]?.message || 'Something went wrong. Try emailing directly.';
+            showStatus('err', msg);
+          }
+        }
+      } catch (err) {
+        showStatus('err', 'Connection failed. Try emailing directly: va.ajaykumar2002@gmail.com');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.querySelector('.btn-text').textContent = 'Send message';
+      }
+    });
+
+    // Clear error on input
+    ['name','email','company','reason','message','captcha'].forEach(fname => {
+      const el = document.getElementById(fname);
+      if (!el) return;
+      el.addEventListener('input', () => setError(fname, ''));
+      el.addEventListener('change', () => setError(fname, ''));
+    });
+  </script>
+</body>
+</html>
