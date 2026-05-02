@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAFCO Case Study | Ajay Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — pure grayscale only
+       Functional colors (green/red) used exclusively on metric data
+    ============================================================ */
+    :root {
+      --white:      #ffffff;
+      --off-white:  #f7f7f7;   /* strictly neutral, no warm tint */
+      --black:      #0a0a0a;
+      --gray-100:   #e8e8e8;   /* borders, dividers */
+      --gray-400:   #999999;   /* secondary labels, captions */
+      --gray-600:   #4a4a4a;   /* body secondary text */
+
+      /* Metric-only functional colors — not used anywhere else */
+      --green:      #1A7A4A;
+      --green-pale: #EAF4EE;
+      --red:        #C0392B;
+      --red-pale:   #FDECEA;
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* No italics anywhere */
+    em, i { font-style: normal; }
+
+    /* ============================================================
+       SIDEBAR NAVIGATION
+       Fixed, identical across all portfolio pages
+    ============================================================ */
+    nav {
+      position: fixed;
+      left: 0; top: 0;
+      width: 220px; height: 100vh;
+      background: var(--white);
+      border-right: 1px solid var(--gray-100);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 14px;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .nav-logo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 0 8px;
+      margin-bottom: 28px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    nav li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 5px;
+      transition: background 0.15s;
+    }
+    nav li:hover { background: var(--off-white); }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      text-decoration: none;
+      flex: 1;
+      line-height: 1;
+    }
+
+    /* Monochrome nav indicator — replaces colored emoji */
+    .nav-icon {
+      width: 16px; height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-icon svg {
+      width: 14px; height: 14px;
+      stroke: var(--black);
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-shortcut {
+      font-size: 11px;
+      color: var(--gray-100);
+      font-weight: 400;
+    }
+
+    .nav-group-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gray-400);
+      padding: 14px 10px 6px;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--gray-100);
+      margin: 10px 0;
+    }
+
+    .nav-spacer { flex: 1; }
+
+    /* ============================================================
+       MAIN CONTENT
+    ============================================================ */
+    main { margin-left: 220px; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      padding: 80px 64px 64px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .hero-content { max-width: 960px; margin: 0 auto; }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-400);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--black); }
+    .back-link::before { content: '\2190'; } /* ← */
+
+    /* Tags */
+    .tag-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--gray-100);
+      color: var(--gray-600);
+      background: var(--off-white);
+      cursor: default;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .tag:hover { border-color: var(--black); background: var(--white); color: var(--black); }
+
+    .tag.tag-primary {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+    .tag.tag-primary:hover { background: var(--gray-600); border-color: var(--gray-600); }
+
+    .tag-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    /* Hero headline */
+    .hero-headline {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+      max-width: 820px;
+    }
+
+    .hero-subheading {
+      font-size: 16px;
+      color: var(--gray-600);
+      line-height: 1.8;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* Hero stats grid */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-100);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 28px 20px;
+      transition: background 0.2s;
+    }
+    .stat-card:hover { background: var(--off-white); }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      line-height: 1;
+    }
+
+    /* Metric delta badges — green only, purely functional */
+    .stat-delta {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 7px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================================
+       CONTEXT STRIP
+    ============================================================ */
+    .context-strip {
+      padding: 32px 64px;
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--off-white);
+    }
+
+    .context-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .context-card { padding: 0 24px 0 0; border-right: 1px solid var(--gray-100); }
+    .context-card:first-child { padding-left: 0; }
+    .context-card:last-child  { border-right: none; padding-right: 0; padding-left: 24px; }
+    .context-card:nth-child(2),
+    .context-card:nth-child(3) { padding-left: 24px; }
+
+    .context-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gray-400);
+      margin-bottom: 5px;
+    }
+
+    .context-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    /* ============================================================
+       SECTION HEADER
+    ============================================================ */
+    .section-header { max-width: 960px; margin: 0 auto 32px; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--black);
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--gray-600);
+      line-height: 1.8;
+      max-width: 640px;
+      margin-top: 10px;
+    }
+
+    /* ============================================================
+       COMPARISON TABLE SECTION
+    ============================================================ */
+    .comparison-section {
+      padding: 64px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .table-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    thead tr { border-bottom: 2px solid var(--black); }
+
+    thead th {
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+    }
+
+    /* Column headers — functional color only where it aids data reading */
+    thead th.col-after-head  { color: var(--green); }
+    thead th.col-before-head { color: var(--red); opacity: 0.75; }
+
+    tbody tr { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
+
+    tbody td {
+      padding: 14px 18px;
+      color: var(--black);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .metric-group-label td {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gray-400);
+      background: var(--off-white);
+      padding: 8px 18px;
+    }
+
+    /* Before: red, dimmed */
+    .col-before { color: var(--red) !important; font-weight: 400 !important; opacity: 0.75; }
+
+    /* After: green, bold */
+    .col-after  { color: var(--green) !important; font-weight: 700 !important; }
+
+    /* Delta */
+    .col-delta { font-weight: 700 !important; }
+    .col-delta.d-green   { color: var(--green); }
+    .col-delta.d-neutral { color: var(--gray-400); }
+
+    /* ============================================================
+       DELTA HIGHLIGHTS
+    ============================================================ */
+    .delta-section {
+      padding: 64px;
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--black);
+    }
+
+    .delta-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .delta-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .delta-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    /* Win cards: green top bar on hover */
+    .delta-card.win::before  { background: var(--green); }
+    /* Save card: white top bar on hover */
+    .delta-card.save::before { background: rgba(255,255,255,0.35); }
+
+    .delta-card:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-4px); }
+    .delta-card:hover::before { transform: scaleX(1); }
+
+    .delta-value {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      transition: transform 0.2s ease;
+    }
+    .delta-card.win  .delta-value { color: var(--green); }
+    .delta-card.save .delta-value { color: var(--white); }
+
+    .delta-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       CHANNEL PERFORMANCE
+    ============================================================ */
+    .channel-section {
+      padding: 64px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .channel-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .channel-card {
+      border: 1px solid var(--gray-100);
+      border-radius: 10px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    /* Corner bracket reveals on hover */
+    .channel-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      border-top: 2px solid var(--black);
+      border-left: 2px solid var(--black);
+      border-radius: 10px 0 0 0;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .channel-card:hover { border-color: var(--black); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .channel-card:hover::before { opacity: 1; }
+
+    .channel-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+
+    .channel-description {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .channel-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--gray-100);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .channel-metric {
+      padding: 14px;
+      text-align: center;
+      border-right: 1px solid var(--gray-100);
+    }
+    .channel-metric:last-child { border-right: none; }
+
+    .channel-metric-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+    /* Delta metric inside card — green, functional only */
+    .channel-metric.highlight .channel-metric-value { color: var(--green); }
+
+    .channel-metric-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gray-400);
+    }
+
+    /* ============================================================
+       INSIGHTS
+    ============================================================ */
+    .insights-section {
+      padding: 64px;
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--off-white);
+    }
+
+    .insights-container { max-width: 960px; margin: 0 auto; }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-100);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .insight-card {
+      background: var(--white);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s;
+    }
+
+    /* Sweep underline on hover */
+    .insight-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+    .insight-card:hover { background: var(--off-white); }
+    .insight-card:hover::after { width: 100%; }
+
+    .insight-number {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .insight-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .insight-card p {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.75;
+    }
+
+    /* ============================================================
+       TAKEAWAY
+       No decorative arrow element
+    ============================================================ */
+    .takeaway-section {
+      padding: 96px 64px;
+      background: var(--white);
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .takeaway-container { max-width: 760px; margin: 0 auto; }
+
+    .takeaway-headline {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+
+    .takeaway-body {
+      font-size: 16px;
+      color: var(--gray-600);
+      line-height: 1.8;
+      max-width: 600px;
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible      { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1      { transition-delay: 0.1s; }
+    .reveal-delay-2      { transition-delay: 0.2s; }
+    .reveal-delay-3      { transition-delay: 0.3s; }
+    .reveal-delay-4      { transition-delay: 0.4s; }
+
+    /* ============================================================
+       MOBILE MENU TOGGLE
+    ============================================================ */
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 18px; left: 18px;
+      width: 42px; height: 42px;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 7px;
+      cursor: pointer;
+      z-index: 3000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px; padding: 0;
+    }
+
+    .mobile-menu-toggle span {
+      width: 17px; height: 1.5px;
+      background: var(--black);
+      border-radius: 1px;
+      display: block;
+      transition: all 0.25s;
+    }
+
+    /* translateY first (original coords) moves span to button centre,
+       then rotate draws a clean centred X.  Values: span height 1.5px,
+       gap 5px → centre of span 1 is 6.5 px above button centre. */
+    .mobile-menu-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mobile-menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mobile-menu-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      nav { width: 190px; }
+      main { margin-left: 190px; }
+      .hero, .comparison-section, .delta-section, .channel-section,
+      .insights-section, .takeaway-section, .context-strip { padding-left: 32px; padding-right: 32px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-headline { font-size: 42px; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-toggle { display: flex; }
+      nav {
+        position: fixed; left: -100%; width: 80vw; max-width: 280px;
+        height: 100vh; transition: left 0.3s;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.1); padding-top: 72px;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+      }
+      nav.open { left: 0; }
+      main { margin-left: 0; }
+      .hero { padding: 72px 20px 40px; }
+      .hero-headline { font-size: 32px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .context-grid { grid-template-columns: repeat(2, 1fr); }
+      .context-card { border-right: none; border-bottom: 1px solid var(--gray-100); padding: 14px 0; }
+      .context-card:last-child { border-bottom: none; padding-left: 0; }
+      .context-card:nth-child(2), .context-card:nth-child(3) { padding-left: 0; }
+      .delta-grid, .channel-grid, .insights-grid { grid-template-columns: 1fr; }
+      .comparison-section, .delta-section, .channel-section,
+      .insights-section, .takeaway-section { padding: 40px 20px; }
+      .takeaway-headline { font-size: 32px; }
+      .section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- ============================================================
+       SIDEBAR NAVIGATION
+       Fixed, identical across all portfolio pages
+  ============================================================ -->
+  <nav id="sidebar">
+    <div class="nav-logo">AK / Portfolio</div>
+
+    <div class="nav-group-label">Main</div>
+    <ul>
+      <li>
+        <a href="index.html#home">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span>
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#about">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+          <span>About</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#journey">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+          <span>Journey</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#work">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span>
+          <span>Case Studies</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#stack">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="5" rx="1"/></svg></span>
+          <span>Tech Stack</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#gallery">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span>
+          <span>Gallery</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <!--
+      Resource section naming suggestions (same meaning, better tone):
+      "Vibe Coded Tools"     -> "Experiments"   (captures self-built, exploratory tools)
+      "Workflows"            -> "Playbooks"      (same operational meaning, more distinct)
+      "Vibe Coded Websites"  -> "Launches"       (implies shipped, public-facing work)
+    -->
+    <div class="nav-group-label">Resources</div>
+    <ul>
+      <li>
+        <a href="index.html#experiments">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 9H8L9 3z"/><path d="M8 12l-2 7a1 1 0 001 1h10a1 1 0 001-1l-2-7"/><circle cx="12" cy="17" r="1"/></svg></span>
+          <span>Experiments</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#playbooks">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></span>
+          <span>Playbooks</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#launches">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+          <span>Launches</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group-label">Fun</div>
+    <ul>
+      <li>
+        <a href="index.html#games">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 12h4M9 10v4"/><circle cx="16" cy="11" r="1"/><circle cx="16" cy="13" r="1" style="display:none"/></svg></span>
+          <span>Games</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group-label">Connect</div>
+    <ul>
+      <li>
+        <a href="mailto:hello@ajaykumar.dev">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+          <span>Contact</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://linkedin.com/in/ajaykumar" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.5"/><path d="M11 17v-4a2 2 0 014 0v4M11 10v7"/></svg></span>
+          <span>LinkedIn</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://instagram.com" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span>Instagram</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.blogger.com" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 10h5M8 14h7"/></svg></span>
+          <span>Blogger</span>
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+
+        <a class="back-link reveal" href="index.html#work">Work</a>
+
+        <div class="tag-row reveal reveal-delay-1">
+          <span class="tag tag-primary"><span class="tag-dot"></span>Performance Marketing</span>
+          <span class="tag">Meta Ads</span>
+          <span class="tag">Google Ads</span>
+          <span class="tag">Lead Generation</span>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <h1 class="hero-headline">How BAFCO turned peak season into a lead efficiency win</h1>
+          <p class="hero-subheading">In the UAE workspace category, January is when budgets open and project demand accelerates. BAFCO entered that period with a stronger acquisition system and generated nearly twice the leads at half the cost.</p>
+        </div>
+
+        <div class="hero-stats reveal reveal-delay-3">
+          <div class="stat-card">
+            <div class="stat-value count-up" data-target="207">0</div>
+            <div class="stat-delta">Up 97% YoY</div>
+            <div class="stat-label">Total Leads</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">AED 69.83</div>
+            <div class="stat-delta">Down 56% CPL</div>
+            <div class="stat-label">Cost Per Lead</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value"><span class="count-up" data-target="56">0</span>%</div>
+            <div class="stat-delta">Lower CPL</div>
+            <div class="stat-label">Efficiency Gain</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value"><span class="count-up" data-target="13">0</span>%</div>
+            <div class="stat-delta">Lower Spend</div>
+            <div class="stat-label">Budget Saved</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTEXT STRIP -->
+    <section class="context-strip reveal">
+      <div class="context-grid">
+        <div class="context-card">
+          <div class="context-label">Brand</div>
+          <div class="context-value">BAFCO</div>
+        </div>
+        <div class="context-card">
+          <div class="context-label">Category</div>
+          <div class="context-value">Office furniture + workspace solutions</div>
+        </div>
+        <div class="context-card">
+          <div class="context-label">Channels</div>
+          <div class="context-value">Meta Ads + Google Ads</div>
+        </div>
+        <div class="context-card">
+          <div class="context-label">Period</div>
+          <div class="context-value">Jan 2025 vs Jan 2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARISON TABLE -->
+    <section class="comparison-section">
+      <div class="section-header reveal">
+        <div class="section-label">The Numbers</div>
+        <h2 class="section-title">One peak month. Two very different outcomes.</h2>
+        <p class="section-body">January is one of the most competitive commercial windows in this category. The difference was not the season. The difference was the system behind it.</p>
+      </div>
+
+      <div class="table-wrap reveal reveal-delay-1">
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th class="col-before-head">January 2025</th>
+              <th class="col-after-head">January 2026</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="metric-group-label"><td colspan="4">Overall Performance</td></tr>
+            <tr>
+              <td>Total Ad Spend</td>
+              <td class="col-before">AED 16,653.32</td>
+              <td class="col-after">AED 14,455.61</td>
+              <td class="col-delta d-green">-13%</td>
+            </tr>
+            <tr>
+              <td>Total Leads</td>
+              <td class="col-before">105</td>
+              <td class="col-after">207</td>
+              <td class="col-delta d-green">+97%</td>
+            </tr>
+            <tr>
+              <td>Cost Per Lead</td>
+              <td class="col-before">AED 158.60</td>
+              <td class="col-after">AED 69.83</td>
+              <td class="col-delta d-green">-56%</td>
+            </tr>
+
+            <tr class="metric-group-label"><td colspan="4">Meta Ads</td></tr>
+            <tr>
+              <td>Meta Spend</td>
+              <td class="col-before">AED 9,723.18</td>
+              <td class="col-after">AED 7,239.79</td>
+              <td class="col-delta d-green">-25%</td>
+            </tr>
+            <tr>
+              <td>Meta Leads</td>
+              <td class="col-before">88</td>
+              <td class="col-after">156</td>
+              <td class="col-delta d-green">+77%</td>
+            </tr>
+            <tr>
+              <td>Meta CPL</td>
+              <td class="col-before">AED 110.49</td>
+              <td class="col-after">AED 46.40</td>
+              <td class="col-delta d-green">-58%</td>
+            </tr>
+
+            <tr class="metric-group-label"><td colspan="4">Google Ads</td></tr>
+            <tr>
+              <td>Google Spend</td>
+              <td class="col-before">AED 6,930.14</td>
+              <td class="col-after">AED 7,215.82</td>
+              <td class="col-delta d-neutral">+4%</td>
+            </tr>
+            <tr>
+              <td>Google Leads</td>
+              <td class="col-before">17</td>
+              <td class="col-after">51</td>
+              <td class="col-delta d-green">+200%</td>
+            </tr>
+            <tr>
+              <td>Google CPL</td>
+              <td class="col-before">AED 407.65</td>
+              <td class="col-after">AED 141.48</td>
+              <td class="col-delta d-green">-65%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DELTA HIGHLIGHTS -->
+    <section class="delta-section">
+      <div class="delta-grid">
+        <div class="delta-card win reveal">
+          <div class="delta-value">+97%</div>
+          <div class="delta-label">Total leads generated, nearly double the prior year</div>
+        </div>
+        <div class="delta-card win reveal reveal-delay-1">
+          <div class="delta-value">-56%</div>
+          <div class="delta-label">Cost per lead, from AED 158 down to AED 69</div>
+        </div>
+        <div class="delta-card save reveal reveal-delay-2">
+          <div class="delta-value">-13%</div>
+          <div class="delta-label">Total spend, more output with less budget</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHANNEL PERFORMANCE -->
+    <section class="channel-section">
+      <div class="section-header reveal">
+        <div class="section-label">By Channel</div>
+        <h2 class="section-title">Both channels improved. Neither by accident.</h2>
+      </div>
+
+      <div class="channel-grid">
+        <div class="channel-card reveal">
+          <h3 class="channel-title">Meta Ads</h3>
+          <p class="channel-description">Spend dropped 25% while leads nearly doubled, from 88 to 156. Creative shifted from product showcases to workspace outcomes, driving higher intent engagement at the top of funnel.</p>
+          <div class="channel-metrics">
+            <div class="channel-metric">
+              <div class="channel-metric-value">156</div>
+              <div class="channel-metric-label">Leads</div>
+            </div>
+            <div class="channel-metric">
+              <div class="channel-metric-value">AED 46.40</div>
+              <div class="channel-metric-label">CPL</div>
+            </div>
+            <div class="channel-metric highlight">
+              <div class="channel-metric-value">-58%</div>
+              <div class="channel-metric-label">CPL change</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="channel-card reveal reveal-delay-1">
+          <h3 class="channel-title">Google Ads</h3>
+          <p class="channel-description">Spend held flat year on year, but leads tripled, from 17 to 51. Tighter intent alignment and better landing destinations made the same budget work three times as hard.</p>
+          <div class="channel-metrics">
+            <div class="channel-metric">
+              <div class="channel-metric-value">51</div>
+              <div class="channel-metric-label">Leads</div>
+            </div>
+            <div class="channel-metric">
+              <div class="channel-metric-value">AED 141.48</div>
+              <div class="channel-metric-label">CPL</div>
+            </div>
+            <div class="channel-metric highlight">
+              <div class="channel-metric-value">-65%</div>
+              <div class="channel-metric-label">CPL change</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section class="insights-section">
+      <div class="insights-container">
+        <div class="section-header reveal">
+          <div class="section-label">How We Got There</div>
+          <h2 class="section-title">Four moves that made the difference.</h2>
+        </div>
+
+        <div class="insights-grid">
+          <div class="insight-card reveal">
+            <div class="insight-number">01</div>
+            <h3>Stayed visible before demand peaked</h3>
+            <p>Office project buyers do not convert instantly. Consistent visibility helped BAFCO stay familiar before the buying window opened, so January was a harvest, not a cold start.</p>
+          </div>
+          <div class="insight-card reveal reveal-delay-1">
+            <div class="insight-number">02</div>
+            <h3>Shifted from products to outcomes</h3>
+            <p>Workspace-focused creative made the end result easier to imagine than product-only messaging. Buyers saw themselves in the space before they clicked.</p>
+          </div>
+          <div class="insight-card reveal reveal-delay-2">
+            <div class="insight-number">03</div>
+            <h3>Matched search intent more tightly</h3>
+            <p>Search traffic was aligned more closely to what users were actively looking for, with more relevant landing destinations and less friction between intent and action.</p>
+          </div>
+          <div class="insight-card reveal reveal-delay-3">
+            <div class="insight-number">04</div>
+            <h3>Let performance move the budget</h3>
+            <p>Budget allocation became more dynamic, reducing waste and concentrating spend into what was working. Efficiency compounded across the month.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAKEAWAY -->
+    <section class="takeaway-section">
+      <div class="takeaway-container reveal">
+        <h2 class="takeaway-headline">
+          January did not create the result.<br>
+          It exposed it.
+        </h2>
+        <p class="takeaway-body">What looked like a peak month win was the outcome of a year of stronger visibility, better creative direction, tighter intent alignment, and more disciplined optimisation. The season opened the door. The system walked through it.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Mobile menu
+    const toggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      toggle.classList.toggle('active');
+      sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', e => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        toggle.classList.remove('active');
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // Scroll reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Count-up
+    function animateCount(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1200;
+      const start = performance.now();
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.count-up[data-target]').forEach(el => countObserver.observe(el));
+
+    // Table row hover
+    document.querySelectorAll('tbody tr:not(.metric-group-label)').forEach(row => {
+      row.addEventListener('mouseenter', () => row.style.background = '#f7f7f7');
+      row.addEventListener('mouseleave', () => row.style.background = '');
+    });
+
+    // Delta card scale
+    document.querySelectorAll('.delta-card').forEach(card => {
+      const val = card.querySelector('.delta-value');
+      card.addEventListener('mouseenter', () => { val.style.transform = 'scale(1.05)'; val.style.transition = 'transform 0.2s ease'; });
+      card.addEventListener('mouseleave', () => { val.style.transform = 'scale(1)'; });
+    });
+  </script>
+</body>
+</html>
