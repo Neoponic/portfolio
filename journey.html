@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey | Ajay Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — identical to BAFCO
+    ============================================================ */
+    :root {
+      --white:      #ffffff;
+      --off-white:  #f7f7f7;
+      --black:      #0a0a0a;
+      --gray-100:   #e8e8e8;
+      --gray-200:   #d4d4d4;
+      --gray-400:   #999999;
+      --gray-600:   #4a4a4a;
+      --green:      #1A7A4A;
+      --green-pale: #EAF4EE;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       SIDEBAR — identical to BAFCO
+    ============================================================ */
+    nav {
+      position: fixed;
+      left: 0; top: 0;
+      width: 220px; height: 100vh;
+      background: var(--white);
+      border-right: 1px solid var(--gray-100);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 14px;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .nav-logo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 0 8px;
+      margin-bottom: 28px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    nav li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 5px;
+      transition: background 0.15s;
+    }
+    nav li:hover { background: var(--off-white); }
+
+    nav li.active {
+      background: var(--off-white);
+      border-left: 2px solid var(--black);
+      padding-left: 8px;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      text-decoration: none;
+      flex: 1;
+      line-height: 1;
+    }
+
+    nav a[aria-current="page"] {
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-icon svg {
+      width: 14px; height: 14px;
+      stroke: var(--black);
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-group-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gray-400);
+      padding: 14px 10px 6px;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--gray-100);
+      margin: 10px 0;
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    main { margin-left: 220px; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      padding: 80px 64px 64px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .hero-content { max-width: 960px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+
+    .hero-headline {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+
+    .hero-subheading {
+      font-size: 16px;
+      color: var(--gray-600);
+      line-height: 1.8;
+      max-width: 540px;
+    }
+
+    /* ============================================================
+       JOURNEY TRACK
+    ============================================================ */
+    .journey-section {
+      padding: 80px 64px 120px;
+    }
+
+    .journey-container {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* The continuous vertical spine */
+    .journey-spine {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--gray-100);
+      transform: translateX(-50%);
+      z-index: 0;
+    }
+
+    /* Animated fill layer — grows as you scroll */
+    .journey-spine-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--black);
+      height: 0%;
+      transition: height 0.1s linear;
+    }
+
+    /* ── Journey row ─────────────────────────────────── */
+    .journey-row {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      align-items: start;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 1;
+      padding: 28px 0;
+    }
+
+    /* Alternate: left or right */
+    .journey-row.left  .journey-card { grid-column: 1; }
+    .journey-row.left  .journey-node { grid-column: 2; }
+    .journey-row.left  .journey-spacer { grid-column: 3; }
+
+    .journey-row.right .journey-spacer { grid-column: 1; }
+    .journey-row.right .journey-node   { grid-column: 2; }
+    .journey-row.right .journey-card   { grid-column: 3; }
+
+    /* ── Node / dot ───────────────────────────────────── */
+    .journey-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding-top: 18px;
+    }
+
+    .node-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--black);
+      background: var(--white);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    /* Milestone type: edu (hollow dot) vs work (filled) */
+    .journey-row.edu  .node-dot { border-color: var(--gray-200); }
+    .journey-row.work .node-dot { border-color: var(--black); }
+    .journey-row.work .node-dot::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: var(--black);
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    /* Pulse ring on active/hovered work nodes */
+    .journey-row.work:hover .node-dot,
+    .journey-row.work.node-visible .node-dot {
+      box-shadow: 0 0 0 4px rgba(10,10,10,0.08);
+    }
+
+    .journey-row.work.node-visible .node-dot::after,
+    .journey-row.work:hover .node-dot::after {
+      transform: scale(1);
+    }
+
+    /* Special: current role */
+    .journey-row.current .node-dot {
+      width: 14px; height: 14px;
+      border-width: 2px;
+    }
+
+    .journey-row.current .node-dot::after { background: var(--black); }
+
+    /* Pulsing ring animation for "Present" node */
+    .pulse-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--black);
+      opacity: 0;
+      animation: pulseRing 2.4s ease-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseRing {
+      0%   { opacity: 0.5; transform: translate(-50%, -50%) scale(0.5); }
+      100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.8); }
+    }
+
+    /* ── Year label ───────────────────────────────────── */
+    .journey-node .year-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-top: 8px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* ── Journey card ─────────────────────────────────── */
+    .journey-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 10px;
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.3s ease;
+    }
+
+    .journey-card:hover {
+      border-color: var(--black);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+
+    /* Sweep underline on hover */
+    .journey-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+    .journey-card:hover::after { width: 100%; }
+
+    /* Education cards — lighter treatment */
+    .journey-row.edu .journey-card {
+      background: var(--off-white);
+      border-color: var(--gray-100);
+      padding: 18px 22px;
+    }
+
+    .journey-row.edu .journey-card:hover {
+      border-color: var(--gray-200);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .journey-row.edu .journey-card::after { display: none; }
+
+    /* Card anatomy */
+    .card-date {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .card-org {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-400);
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.75;
+    }
+
+    /* ── Active / present badge ───────────────────────── */
+    .badge-present {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--green-pale);
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: badgePulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ── Global Surf special card ─────────────────────── */
+    .journey-row.gsd .journey-card {
+      border-color: var(--black);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .journey-row.gsd .journey-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+      transform: translateY(-3px);
+    }
+
+    .gsd-header {
+      padding: 22px 28px 18px;
+      border-bottom: 1px solid var(--gray-100);
+      background: var(--black);
+    }
+
+    .gsd-header .card-date { color: var(--gray-400); }
+    .gsd-header .card-title { color: var(--white); font-size: 16px; }
+    .gsd-header .card-org { color: rgba(255,255,255,0.45); margin-bottom: 0; }
+
+    .gsd-splits {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gsd-split {
+      padding: 20px 28px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .gsd-split:hover { background: var(--off-white); }
+
+    .gsd-split + .gsd-split {
+      border-top: 1px solid var(--gray-100);
+    }
+
+    /* Arrow connector between splits */
+    .gsd-split + .gsd-split::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 28px;
+      width: 16px; height: 1px;
+      background: var(--black);
+    }
+
+    .gsd-split-role {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+
+    .gsd-split-period {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 8px;
+    }
+
+    .gsd-split-body {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.7;
+    }
+
+    /* Promotion arrow between splits */
+    .gsd-promote-arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 28px;
+      border-top: 1px dashed var(--gray-100);
+      border-bottom: 1px dashed var(--gray-100);
+      background: var(--off-white);
+    }
+
+    .gsd-promote-arrow span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+    }
+
+    .gsd-promote-arrow svg {
+      width: 12px; height: 12px;
+      stroke: var(--gray-400);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── Journey spacer ───────────────────────────────── */
+    .journey-spacer { /* empty grid cell */ }
+
+    /* ── End cap ──────────────────────────────────────── */
+    .journey-end {
+      display: flex;
+      justify-content: center;
+      padding-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .journey-end-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      padding: 6px 14px;
+      border: 1px solid var(--gray-100);
+      border-radius: 20px;
+      background: var(--white);
+    }
+
+    /* ============================================================
+       SCROLL REVEAL — identical to BAFCO
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Left cards slide in from left */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    /* Right cards slide in from right */
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* Node pops in */
+    .reveal-node {
+      opacity: 0;
+      transform: scale(0.4);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-node.visible { opacity: 1; transform: scale(1); }
+
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+
+    /* ============================================================
+       MOBILE TOGGLE — identical to BAFCO (fixed)
+    ============================================================ */
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 18px; left: 18px;
+      width: 42px; height: 42px;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 7px;
+      cursor: pointer;
+      z-index: 3000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px; padding: 0;
+    }
+
+    .mobile-menu-toggle span {
+      width: 17px; height: 1.5px;
+      background: var(--black);
+      border-radius: 1px;
+      display: block;
+      transition: all 0.25s;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mobile-menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mobile-menu-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      nav { width: 190px; }
+      main { margin-left: 190px; }
+      .hero,
+      .journey-section { padding-left: 32px; padding-right: 32px; }
+      .hero-headline { font-size: 42px; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-toggle { display: flex; }
+
+      nav {
+        position: fixed; left: -100%; width: 80vw; max-width: 280px;
+        height: 100vh; transition: left 0.3s;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        padding-top: 72px;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+      }
+      nav.open { left: 0; }
+
+      main { margin-left: 0; }
+      .hero { padding: 72px 20px 40px; }
+      .hero-headline { font-size: 32px; }
+
+      .journey-section { padding: 48px 20px 80px; }
+
+      /* Mobile: spine moves to left edge */
+      .journey-spine {
+        left: 20px;
+        transform: none;
+      }
+
+      .journey-container { padding-left: 48px; }
+
+      /* All rows become single-column, left-aligned */
+      .journey-row {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 36px 0;
+        margin-left: 0;
+      }
+
+      .journey-node {
+        position: absolute;
+        left: -34px;
+        top: 18px;
+        padding-top: 0;
+        flex-direction: row;
+        gap: 0;
+      }
+
+      .journey-row.current .journey-node {
+        left: -36px;
+      }
+
+      .journey-node .year-label {
+        display: none;
+      }
+
+      .journey-row { position: relative; }
+      .journey-spacer { display: none; }
+
+      .journey-card { width: 100%; }
+
+      /* Undo slide-in directions on mobile — use plain reveal */
+      .reveal-left,
+      .reveal-right {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      .reveal-left.visible,
+      .reveal-right.visible {
+        transform: translateY(0);
+      }
+
+      /* GSD card mobile */
+      .gsd-header { padding: 18px 20px 14px; }
+      .gsd-split  { padding: 16px 20px; }
+      .gsd-promote-arrow { padding: 8px 20px; }
+
+      /* End cap positioning */
+      .journey-end { justify-content: flex-start; padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- SIDEBAR — identical to BAFCO -->
+  <nav id="sidebar">
+    <div class="nav-logo">AK / Portfolio</div>
+
+    <div class="nav-group-label">Main</div>
+    <ul>
+      <li>
+        <a href="index.html#home">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span>
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="about.html">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+          <span>About</span>
+        </a>
+      </li>
+      <li class="active">
+        <a href="journey.html" aria-current="page">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+          <span>Journey</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#work">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span>
+          <span>Case Studies</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#stack">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="5" rx="1"/></svg></span>
+          <span>Tech Stack</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#gallery">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span>
+          <span>Gallery</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group-label">Resources</div>
+    <ul>
+      <li>
+        <a href="index.html#experiments">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 9H8L9 3z"/><path d="M8 12l-2 7a1 1 0 001 1h10a1 1 0 001-1l-2-7"/><circle cx="12" cy="17" r="1"/></svg></span>
+          <span>Experiments</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#playbooks">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></span>
+          <span>Playbooks</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#launches">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+          <span>Launches</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group-label">Fun</div>
+    <ul>
+      <li>
+        <a href="index.html#games">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M7 12h4M9 10v4"/><circle cx="16" cy="11" r="1"/></svg></span>
+          <span>Games</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-group-label">Connect</div>
+    <ul>
+      <li>
+        <a href="mailto:hello@ajaykumar.dev">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+          <span>Contact</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://linkedin.com/in/ajaykumar" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.5"/><path d="M11 17v-4a2 2 0 014 0v4M11 10v7"/></svg></span>
+          <span>LinkedIn</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://instagram.com" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span>Instagram</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.blogger.com" target="_blank" rel="noopener">
+          <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 10h5M8 14h7"/></svg></span>
+          <span>Blogger</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- HERO ─────────────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="section-label reveal">Journey</div>
+        <h1 class="hero-headline reveal reveal-delay-1">How I got here.</h1>
+        <p class="hero-subheading reveal reveal-delay-2">A quick map of where I started, what I studied, and the roles that shaped how I work today.</p>
+      </div>
+    </section>
+
+    <!-- TIMELINE ─────────────────────────────────────────────── -->
+    <section class="journey-section">
+      <div class="journey-container">
+
+        <!-- Spine -->
+        <div class="journey-spine">
+          <div class="journey-spine-fill" id="spineFill"></div>
+        </div>
+
+        <!-- ── 1. 2018 SSLC ── -->
+        <div class="journey-row edu left">
+          <div class="journey-card reveal-left">
+            <div class="card-date">2018</div>
+            <div class="card-title">Secondary School (High School equivalent) completed</div>
+            <div class="card-org">Stella Maris Convent School</div>
+            <div class="card-body">Thiruvaniyoor, Ernakulam</div>
+          </div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2018</div>
+          </div>
+          <div class="journey-spacer"></div>
+        </div>
+
+        <!-- ── 2. 2020 12th ── -->
+        <div class="journey-row edu right">
+          <div class="journey-spacer"></div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2020</div>
+          </div>
+          <div class="journey-card reveal-right">
+            <div class="card-date">2020</div>
+            <div class="card-title">Higher Secondary (Commerce) completed</div>
+            <div class="card-org">St. George HSS</div>
+            <div class="card-body">Vennikulam, Ernakulam</div>
+          </div>
+        </div>
+
+        <!-- ── 3. 2020 BCom started ── -->
+        <div class="journey-row edu left">
+          <div class="journey-card reveal-left">
+            <div class="card-date">2020</div>
+            <div class="card-title">Bachelor of Commerce, Finance &amp; Taxation — started</div>
+          </div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2020</div>
+          </div>
+          <div class="journey-spacer"></div>
+        </div>
+
+        <!-- ── 4. 2021 Freelance designer ── -->
+        <div class="journey-row work right">
+          <div class="journey-spacer"></div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2021</div>
+          </div>
+          <div class="journey-card reveal-right">
+            <div class="card-date">2021</div>
+            <div class="card-title">Freelance Graphic Designer</div>
+            <div class="card-org">Esports organisations</div>
+            <div class="card-body">Designed visuals and match-day creatives for esports organisations, which gave me an early foundation in digital design and fast-turnaround content.</div>
+          </div>
+        </div>
+
+        <!-- ── 5. 2023 BCom completed ── -->
+        <div class="journey-row edu left">
+          <div class="journey-card reveal-left">
+            <div class="card-date">2023</div>
+            <div class="card-title">Bachelor of Commerce, Finance &amp; Taxation — graduated</div>
+            <div class="card-org">KMM College of Arts and Science</div>
+            <div class="card-body">Thrikkakara, Ernakulam</div>
+            <div class="card-body">Graduated with 6.83 CGPA</div>
+          </div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2023</div>
+          </div>
+          <div class="journey-spacer"></div>
+        </div>
+
+        <!-- ── 6. Yarry ── -->
+        <div class="journey-row work gsd right">
+          <div class="journey-spacer"></div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2023</div>
+          </div>
+          <div class="journey-card reveal-right">
+            <div class="gsd-header">
+              <div class="card-date">28 Sep 2023 – 29 Feb 2024</div>
+              <div class="card-title">Yarry</div>
+              <div class="card-org">Hyderabad (remote from Kerala)</div>
+            </div>
+
+            <div class="gsd-splits">
+              <div class="gsd-split">
+                <div class="gsd-split-role">Digital Marketing Executive Intern</div>
+                <div class="gsd-split-body">Worked across creative tasks, including illustrations and graphic design, and early digital marketing execution across SEO and ads, while also owning the end-to-end execution of Google Ads campaigns for app downloads.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 7. Ignite ABM ── -->
+        <div class="journey-row work gsd left">
+          <div class="journey-card reveal-left">
+            <div class="gsd-header">
+              <div class="card-date">1 Mar 2024 – 20 Aug 2024</div>
+              <div class="card-title">Ignite ABM</div>
+              <div class="card-org">Bengaluru, Karnataka</div>
+            </div>
+
+            <div class="gsd-splits">
+              <div class="gsd-split">
+                <div class="gsd-split-role">Campaign Operations Associate</div>
+                <div class="gsd-split-body">Managed campaign operations for clients across the US and Singapore, coordinating setup, QA, and reporting across multiple ABM programs.</div>
+              </div>
+            </div>
+          </div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2024</div>
+          </div>
+          <div class="journey-spacer"></div>
+        </div>
+
+        <!-- ── 8. Recotap ── -->
+        <div class="journey-row work gsd right">
+          <div class="journey-spacer"></div>
+          <div class="journey-node">
+            <div class="node-dot reveal-node"></div>
+            <div class="year-label">2024</div>
+          </div>
+          <div class="journey-card reveal-right">
+            <div class="gsd-header">
+              <div class="card-date">1 Jun 2024 – 5 Feb 2025</div>
+              <div class="card-title">Recotap</div>
+              <div class="card-org">Bengaluru, Karnataka</div>
+            </div>
+
+            <div class="gsd-splits">
+              <div class="gsd-split">
+                <div class="gsd-split-role">ABM Operations</div>
+                <div class="gsd-split-body">Worked on LinkedIn ads and account-based marketing workflows inside a SaaS environment, getting deeper into structured B2B campaign systems.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 9. Global Surf Digital — special card ── -->
+        <div class="journey-row work gsd current left">
+          <div class="journey-card reveal-left">
+            <div class="gsd-header">
+              <div class="badge-present">
+                <span class="badge-dot"></span>
+                Current
+              </div>
+              <div class="card-date">20 Feb 2025 – Present</div>
+              <div class="card-title">Global Surf Digital</div>
+              <div class="card-org">UAE</div>
+              <div class="card-org">Working remotely from Kerala via the company’s Cochin office.</div>
+            </div>
+
+            <div class="gsd-splits">
+              <!-- Role 1 -->
+              <div class="gsd-split">
+                <div class="gsd-split-role">Performance Marketing Executive</div>
+                <div class="gsd-split-period">20 Feb 2025 – 31 Dec 2025</div>
+                <div class="gsd-split-body">Managed and optimised performance marketing campaigns across multiple B2B and B2C brands in the UAE.</div>
+              </div>
+
+              <!-- Promotion indicator -->
+              <div class="gsd-promote-arrow">
+                <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+                <span>Promoted</span>
+              </div>
+
+              <!-- Role 2 -->
+              <div class="gsd-split">
+                <div class="gsd-split-role">Performance Marketing Team Lead</div>
+                <div class="gsd-split-period">1 Jan 2026 – Present</div>
+                <div class="gsd-split-body">Now lead a wider marketing scope across multiple client accounts, including in-house marketing management, full-funnel optimisation, creative direction, email marketing, strategy planning, LinkedIn employee advocacy initiatives, and AI-led marketing experiments.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-node">
+            <div class="node-dot reveal-node" style="width:16px;height:16px;">
+              <div class="pulse-ring"></div>
+            </div>
+            <div class="year-label">2025</div>
+          </div>
+          <div class="journey-spacer"></div>
+        </div>
+
+        <!-- End cap -->
+        <div class="journey-end reveal">
+          <div class="journey-end-label">Present</div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ── Mobile menu — identical to BAFCO ────────────────────────
+    const toggle  = document.getElementById('mobileMenuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      toggle.classList.toggle('active');
+      sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', e => {
+      if (window.innerWidth <= 768 &&
+          !sidebar.contains(e.target) &&
+          !toggle.contains(e.target)) {
+        toggle.classList.remove('active');
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // ── Scroll reveal — identical config to BAFCO ───────────────
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Mark the parent row so node inner fill can activate
+          const row = entry.target.closest('.journey-row');
+          if (row) row.classList.add('node-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll(
+      '.reveal, .reveal-left, .reveal-right, .reveal-node'
+    ).forEach(el => revealObserver.observe(el));
+
+    // ── Spine fill — grows as page is scrolled ──────────────────
+    const spineFill      = document.getElementById('spineFill');
+    const journeySection = document.querySelector('.journey-section');
+
+    function updateSpine() {
+      if (!journeySection || !spineFill) return;
+      const rect   = journeySection.getBoundingClientRect();
+      const total  = journeySection.offsetHeight;
+      const scrolled = Math.max(0, -rect.top + window.innerHeight * 0.5);
+      const pct    = Math.min(100, (scrolled / total) * 100);
+      spineFill.style.height = pct + '%';
+    }
+
+    window.addEventListener('scroll', updateSpine, { passive: true });
+    updateSpine();
+  </script>
+</body>
+</html>
